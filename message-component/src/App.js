@@ -1,31 +1,52 @@
 import logo from "./logo.svg";
-import Message from "./components/Message";
+import MessageList from "./components/MessageList";
 import Card from "./components/Card";
 import "./App.css";
+import { useState } from "react";
 
-const DUMMY_DATA = [
+const mock_messages = [
   {
-    id: "e1",
+    id: "1",
     title: "Toilet Paper",
     link: "www.toiletpaper.com",
+    visited: false,
   },
   {
-    id: "e2",
+    id: "2",
     title: "Car Insurance",
-    link: "www.toiletpaper.com",
+    link: "www.carinsurance.com",
+    visited: false,
   },
   {
-    id: "e3",
-    title: "New Desk (Wooden)",
-    link: "www.toiletpaper.com",
+    id: "3",
+    title: "Fun fun forum",
+    link: "www.funfunfun.com",
+    visited: false,
   },
 ];
 
 const App = () => {
+  const [messages, setMessages] = useState(mock_messages);
+
+  const changeMessageHandler = (id) => {
+    setMessages((prevMessages) => {
+      let alteredMessages = prevMessages.map((message) => {
+        if (message.id == id) {
+          return { ...message, visited: true };
+        }
+        return message;
+      });
+      console.log(alteredMessages);
+      return [...alteredMessages];
+    });
+  };
+
   return (
     <Card className="expenses">
-      <Message />
-      <Message />
+      <MessageList
+        messagesList={messages}
+        onChangeMessage={changeMessageHandler}
+      />
     </Card>
   );
 };
