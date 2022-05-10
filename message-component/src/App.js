@@ -1,32 +1,66 @@
-import logo from "./logo.svg";
-import MessageList from "./components/MessageList";
-import Card from "./components/Card";
-import "./App.css";
 import { useState } from "react";
+import MessageAdminList from "./components/MessageAdminList";
+import Card from "./components/Card";
+import Message from "./components/Message";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const mock_messages = [
   {
     id: "1",
-    title: "Toilet Paper",
-    link: "www.toiletpaper.com",
+    title: "Příprava v poli",
+    link: "www.moodle.com/pp",
     visited: false,
   },
   {
     id: "2",
-    title: "Car Insurance",
-    link: "www.carinsurance.com",
+    title: "BoRo",
+    link: "www.intranet.unob.com/email",
     visited: false,
   },
+  // {
+  //   id: "3",
+  //   title: "OUI 2022",
+  //   link: "www.moodle.com/oui",
+  //   visited: false,
+  // },
+];
+
+const admin_messages_list = [
   {
-    id: "3",
-    title: "Fun fun forum",
-    link: "www.funfunfun.com",
-    visited: false,
+    id: "1",
+
+    title: "Příprava v poli",
+  },
+  {
+    id: "2",
+    title: "BoRo",
+  },
+];
+
+const users = [
+  {
+    id: "1",
+    firstName: "Tomáš",
+    lastName: "Vávra",
+  },
+  {
+    id: "2",
+    firstName: "Filip",
+    lastName: "Yndler",
   },
 ];
 
 const App = () => {
   const [messages, setMessages] = useState(mock_messages);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const changeMessageHandler = (id) => {
     setMessages((prevMessages) => {
@@ -36,18 +70,49 @@ const App = () => {
         }
         return message;
       });
-      console.log(alteredMessages);
+
       return [...alteredMessages];
     });
   };
 
   return (
-    <Card className="expenses">
-      <MessageList
-        messagesList={messages}
-        onChangeMessage={changeMessageHandler}
-      />
-    </Card>
+    <div>
+      <Card className="expenses">
+        <MessageAdminList
+          messages={admin_messages_list}
+          users={users}
+          onChangeMessage={changeMessageHandler}
+        />
+      </Card>
+
+      <>
+        <Button variant="primary" onClick={handleShow}>
+          Launch demo modal
+        </Button>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {" "}
+            <Message
+              link={mock_messages[0].link}
+              title={mock_messages[0].title}
+              visited={mock_messages[0].visited}
+            ></Message>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </div>
   );
 };
 
