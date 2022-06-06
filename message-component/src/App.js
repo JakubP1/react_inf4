@@ -91,9 +91,9 @@ const App = () => {
         </Button>
 
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
+          {/* <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
+          </Modal.Header> */}
           <Modal.Body>
             {" "}
             <Message
@@ -106,9 +106,9 @@ const App = () => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            {/* <Button variant="primary" onClick={handleClose}>
               Save Changes
-            </Button>
+            </Button> */}
           </Modal.Footer>
         </Modal>
       </>

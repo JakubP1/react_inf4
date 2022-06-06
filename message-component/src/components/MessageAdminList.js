@@ -12,7 +12,6 @@ const MessageAdminList = (props) => {
           users={props.users}
         ></MessageAdmin>
       ))}
-      ;
     </>
   );
 };
