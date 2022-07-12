@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { useQueryGQL, Loading, LoadingError } from "../index";
-
-import { Accordion, Container, Table, Col, Row, Card } from "react-bootstrap";
+import { Table, Col, Row, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-// import { getBsProps } from "react-bootstrap/lib/utils/bootstrapUtils";
 
 /** @module Message */
 
@@ -12,6 +9,7 @@ import { useParams } from "react-router-dom";
  * @param {*} props
  * @function
  */
+
 export const MessageStoryBook = (props) => {
   const extraProps = {
     id: 1,
@@ -37,45 +35,34 @@ export const MessageStoryBook = (props) => {
 /**
  * Retrieves the data from GraphQL API endpoint
  * @param {*} id - identificator
- * @function
- */
+ * @function MessageQuery */
 
 export const MessageQuery = (id) => {
-  return new Promise((resolve, reject) => {
-    resolve(JSON.stringify({ id: 2, title: "Bojova pohotovst" }));
+  fetch("/gql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `
+     query{
+         message(id: ${id}) {
+             title
+             users {
+               name
+               lastname
+               visited
+             }
+           }
+     }              
+         `,
+    }),
   });
 };
-
-//  fetch('/gql', {
-//      method: 'POST',
-//      headers: {
-//      'Content-Type': 'application/json',
-//      },
-//      body: JSON.stringify({
-//      query: `
-//      query{
-//          message(id: ${id}) {
-//              id
-//              title
-//              users {
-//                id
-//                name
-//                lastname
-//                visited
-//              }
-//            }
-//      }
-//          `,
-//      variables: {
-//          now: new Date().toISOString(),
-//      },
-//      }),
-
 /**
  * Renders an overview with data representing a message, contains predefined data which can are overrided by props
  * @param {*} props
- * @function
- */
+ * @function Message */
 
 export const Message = (props) => {
   return (
@@ -86,7 +73,7 @@ export const Message = (props) => {
             <Card.Header>
               <Row>
                 <Col md={8}>{props.title} </Col>
-                {/* <Col>Splneno : 8/10 </Col> */}
+                <Col>Nesplneno : {`${props.users.length}`}/10 </Col>
               </Row>
             </Card.Header>
             <Card.Body>
@@ -170,7 +157,7 @@ export const MessagePageFetching = (props) => {
 /**
  * Renders a page representing a messsage, designed as a component for a ReactJS router
  * @param {*} props - extra props for encapsulated components / visualisers
- * @function
+ * @function MessagePage
  */
 export const MessagePage = (props) => {
   const { id } = useParams();
